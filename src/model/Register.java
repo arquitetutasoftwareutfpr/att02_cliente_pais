@@ -15,12 +15,12 @@ import java.util.List;
  * @author caah_
  */
 public class Register {
-    private List<Customer> clients = new ArrayList();
+    private List<Customer> customers = new ArrayList();
     private List<Country> countries = new ArrayList();
     
     public boolean checkName(String s){
         
-        for(Customer cliente : clients){
+        for(Customer cliente : customers){
             if(cliente.getName().equals(s)){
                 return true;
             }
@@ -34,7 +34,7 @@ public class Register {
     
     public boolean checkCountry(String s){
         
-        for(Customer cliente : clients){
+        for(Customer cliente : customers){
             if(cliente.getCountry().getName().equals(s)){
                 return true;
             }
@@ -57,7 +57,7 @@ public class Register {
         if(!checkName(name) && checkTelephone(country, telephone)){
             
             Customer client = new Customer(name, birthDate, telephone, country);
-            clients.add(client);
+            customers.add(client);
             
         }
     }
@@ -69,7 +69,14 @@ public class Register {
         }
         return false;
     }
-    
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
     
 }
 

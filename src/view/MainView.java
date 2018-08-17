@@ -6,12 +6,18 @@
 
 package view;
 
+import java.text.SimpleDateFormat;
+import javax.swing.table.DefaultTableModel;
+import model.Register;
+
 /**
  *
  * @author vande
  */
 public class MainView extends javax.swing.JFrame {
 
+    private DefaultTableModel tablemodelCustomers = new DefaultTableModel();
+    
     /** Creates new form Principal */
     public MainView() {
         initComponents();
@@ -49,6 +55,11 @@ public class MainView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registration form");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("REGISTRATION FORM");
 
@@ -67,20 +78,14 @@ public class MainView extends javax.swing.JFrame {
         jLabel5.setText("Country:");
 
         btnSalvar.setText("SAVE");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("REGISTERED COSTUMERS");
 
-        jtClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         jScrollPane1.setViewportView(jtClientes);
 
         jLabel7.setText("Select a customer to edit it.");
@@ -181,6 +186,32 @@ public class MainView extends javax.swing.JFrame {
         criarPais.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        setJtCostumers();
+    }//GEN-LAST:event_formWindowOpened
+    
+    private void setJtCostumers(){
+        tablemodelCustomers.addColumn("Name");
+        tablemodelCustomers.addColumn("Birthday");
+        tablemodelCustomers.addColumn("Country");
+        tablemodelCustomers.addColumn("Limit credit");
+        jtClientes.setModel(tablemodelCustomers);        
+    }
+    
+    private String[] insertRowJtCustomers(Register register){
+        String row[] = new String[4];
+        register.getCustomers().forEach((Customer) -> {
+            row[0] = Customer.getName();
+            row[1] = new SimpleDateFormat("yyyy/MM/dd").format(Customer.getBirthDate());
+        });
+        return row;
+    }
+    
     /**
      * @param args the command line arguments
      */

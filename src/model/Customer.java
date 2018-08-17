@@ -43,6 +43,14 @@ public class Customer {
         this.name = name;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+    
     /**
      * @return the telphone
      */
@@ -123,5 +131,5 @@ public class Customer {
         }
         return limit;
     }
-
+    
 }
