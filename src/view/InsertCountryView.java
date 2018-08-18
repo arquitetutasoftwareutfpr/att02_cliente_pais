@@ -5,6 +5,9 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+import model.Country;
+
 /**
  *
  * @author vande
@@ -36,8 +39,8 @@ public class InsertCountryView extends javax.swing.JDialog {
         txtCountrysName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtCountrysInitials = new javax.swing.JTextField();
-        txtSave = new javax.swing.JButton();
-        txtDdi = new javax.swing.JTextField();
+        btnSave = new javax.swing.JButton();
+        txtTelephoneCode = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -63,9 +66,14 @@ public class InsertCountryView extends javax.swing.JDialog {
 
         jLabel3.setText("Country's Initials:");
 
-        txtSave.setText("SAVE");
+        btnSave.setText("SAVE");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("DDI:");
+        jLabel5.setText("Country's telephone code:");
 
         javax.swing.GroupLayout jpCriarPaisLayout = new javax.swing.GroupLayout(jpCriarPais);
         jpCriarPais.setLayout(jpCriarPaisLayout);
@@ -73,7 +81,7 @@ public class InsertCountryView extends javax.swing.JDialog {
             jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpCriarPaisLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtCountrysName)
                     .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1)
@@ -83,13 +91,11 @@ public class InsertCountryView extends javax.swing.JDialog {
                                 .addComponent(txtCountrysInitials, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addGroup(jpCriarPaisLayout.createSequentialGroup()
-                                    .addComponent(txtDdi, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap())
+                            .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTelephoneCode)))
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpCriarPaisLayout.setVerticalGroup(
             jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +113,10 @@ public class InsertCountryView extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpCriarPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCountrysInitials, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDdi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSave))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtTelephoneCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSave)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,6 +133,35 @@ public class InsertCountryView extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        if (checkForm()) {
+            try {
+                MainView.addElementJcbContries(new Country(
+                        txtCountrysName.getText(),
+                        txtCountrysInitials.getText(),
+                        Integer.parseInt(txtTelephoneCode.getText())
+                ));
+                JOptionPane.showMessageDialog(this, "Country inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Apenas números são permitidos em ", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private boolean checkForm() {
+        if (txtCountrysName.getText().equalsIgnoreCase("")) {
+            return false;
+        }
+        if (txtCountrysInitials.getText().equalsIgnoreCase("")) {
+            return false;
+        }
+        if (txtTelephoneCode.getText().equalsIgnoreCase("")) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @param args the command line arguments
@@ -177,6 +213,7 @@ public class InsertCountryView extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -186,7 +223,6 @@ public class InsertCountryView extends javax.swing.JDialog {
     private javax.swing.JPanel jpCriarPais;
     private javax.swing.JTextField txtCountrysInitials;
     private javax.swing.JTextField txtCountrysName;
-    private javax.swing.JTextField txtDdi;
-    private javax.swing.JButton txtSave;
+    private javax.swing.JTextField txtTelephoneCode;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,9 +12,9 @@ package model;
 public class Country {
     private String name;
     private String initials;
-    private int ddi; //Código de área internacional
+    private int telephoneCode; //Código de área internacional
     
-    public Country(String name , String initials){
+    public Country(String name , String initials, int ddi){
         this.name = name;
         this.initials = initials;
     }
@@ -49,12 +49,17 @@ public class Country {
         this.initials = initials;
     }
 
-    public int getDdi(){
-       return this.ddi;
+    public int getTelephoneCode(){
+       return this.telephoneCode;
     }
     
-    public void setDdi(int ddi){
-         this.ddi = ddi;
+    public void setTelephoneCode(int ddi){
+         this.telephoneCode = ddi;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
     
 }

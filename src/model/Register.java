@@ -46,9 +46,9 @@ public class Register {
         }
         return false;
     }
-    public void addCountry(String name , String initials){
+    public void addCountry(String name , String initials, int ddi){
         if(!checkCountry(name)){
-            Country country = new Country(name, initials);
+            Country country = new Country(name, initials, ddi);
             countries.add(country);
         }
     }
@@ -63,7 +63,7 @@ public class Register {
     }
     
     public boolean checkTelephone(Country country, String telephone){
-        String  ddi = String.valueOf(country.getDdi());
+        String  ddi = String.valueOf(country.getTelephoneCode());
         if(ddi.equalsIgnoreCase(telephone.substring(0, ddi.length()-2))){
             return true;
         }
