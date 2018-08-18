@@ -18,9 +18,9 @@ import model.Register;
  */
 public class MainView extends javax.swing.JFrame {
 
-    private static Register REGISTER = new Register();
-    private DefaultTableModel TABLEMODELCUSTOMERS = new DefaultTableModel();
-    private static DefaultComboBoxModel COMBOXMODELCONTRIES = new DefaultComboBoxModel();
+    private static final Register REGISTER = new Register();
+    private final DefaultTableModel TABLEMODELCUSTOMERS = new DefaultTableModel();
+    private static final DefaultComboBoxModel COMBOXMODELCONTRIES = new DefaultComboBoxModel();
 
     /**
      * Creates new form Principal
