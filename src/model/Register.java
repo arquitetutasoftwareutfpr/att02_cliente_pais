@@ -23,33 +23,33 @@ public class Register {
         
         for(Customer cliente : customers){
             if(cliente.getName().equals(s)){
-                return true;
+                return false;
             }
         }
-        if(s.length() > 5){
-            return true;
+        if(s.length() < 5){
+            return false;
         }
         
-        return false;
+        return true;
     }
     
     public boolean checkCountry(String s){
         
         for(Customer cliente : customers){
             if(cliente.getCountry().getName().equals(s)){
-                return true;
+                return false;
             }
         }
         for(Country pais : countries ){
              if(pais.getName().equals(s)){
-                 return true;
+                 return false;
              }   
         }
-        return false;
+        return true;
     }
     public void addCountry(String name , String initials, int ddi){
         try{
-            if(!checkCountry(name)){
+            if(checkCountry(name)){
                 Country country = new Country(name, initials, ddi);
                 countries.add(country);
             }
@@ -60,17 +60,13 @@ public class Register {
     
     public void addCustomer(String name, Date birthDate , String telephone , Country country){
         try{
-            if(!checkName(name) && checkTelephone(country, telephone)){
+            if(checkName(name) && checkTelephone(country, telephone)){
                 Customer client = new Customer(name, birthDate, telephone, country);
                 customers.add(client);
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Name less than 5 characters or already registered!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-        
-    public int getCustomerSize(){
-       return customers.size();
     }
     
     public boolean checkTelephone(Country country, String telephone){

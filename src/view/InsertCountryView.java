@@ -205,11 +205,7 @@ public class InsertCountryView extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        setJtCountries();
-        for(int i = 0 ; i < REGISTER.getCustomerSize();i++){
-            addRowCountriesTable(rowsCountriesFactory(REGISTER.getCountries().get(i)));
-        }
-        
+        setJtCountries();        
     }//GEN-LAST:event_formWindowOpened
 
     private boolean checkForm() {

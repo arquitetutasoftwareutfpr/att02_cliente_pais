@@ -207,10 +207,13 @@ public class MainView extends javax.swing.JFrame {
         if(checkForm()){
             try {
                 Date date = new SimpleDateFormat("yyyy/MM/dd").parse(txtBirthday.getText());
-                REGISTER.addCustomer(txtName.getText(),
+                Customer c = new Customer(txtName.getText(),
                 date,
                 txtPhoneNumber.getText(), 
                 (Country) jcbCountries.getSelectedItem());
+             
+                REGISTER.addCustomer(c.getName(),c.getBirthDate(),c.getTelephone(),c.getCountry());
+                addRowCustomersTable(rowsCustomerFactory(c));
                 JOptionPane.showMessageDialog(this, "Customer inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             } catch (ParseException ex ) {
                 JOptionPane.showMessageDialog(this, "Please, fill in the date of birth correctly!", "Error", JOptionPane.ERROR_MESSAGE);
