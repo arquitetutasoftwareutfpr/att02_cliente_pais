@@ -27,18 +27,11 @@ public class Customer {
         this.creditLimit = this.generateLimitCredit(this.calcAge(birthDate), country.getName());
         this.country = country;
     }
-    public Customer() {
-    }
-    /**
-     * @return the name
-     */
+     
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
@@ -51,44 +44,26 @@ public class Customer {
         this.birthDate = birthDate;
     }
     
-    /**
-     * @return the telphone
-     */
     public String getTelephone() {
         return telephone;
     }
 
-    /**
-     * @param telphone the telphone to set
-     */
     public void setTelephone(String telphone) {
         this.telephone = telphone;
     }
 
-    /**
-     * @return the creditLimit
-     */
     public float getCreditLimit() {
         return creditLimit;
     }
 
-    /**
-     * @param creditLimit the creditLimit to set
-     */
     public void setCreditLimit(float creditLimit) {
         this.creditLimit = creditLimit;
     }
 
-    /**
-     * @return the country
-     */
     public Country getCountry() {
         return country;
     }
 
-    /**
-     * @param country the country to set
-     */
     public void setCountry(Country country) {
         this.country = country;
     }

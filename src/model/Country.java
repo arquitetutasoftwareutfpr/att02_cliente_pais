@@ -21,33 +21,18 @@ public class Country {
         this.telephoneCode = ddi;
     }
 
-    public Country() {
-    }
-
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
-
-    /**
-     * @param name the name to set
-     */
+    
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * @return the initials
-     */
+    
     public String getInitials() {
         return initials;
     }
 
-    /**
-     * @param initials the initials to set
-     */
     public void setInitials(String initials) {
         this.initials = initials;
     }
