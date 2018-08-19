@@ -8,13 +8,15 @@ package view;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Country;
+import model.Register;
 
 /**
  *
  * @author vande
  */
 public class InsertCountryView extends javax.swing.JDialog {
-
+    
+    private static final Register REGISTER = new Register();
     private final DefaultTableModel TABLEMODELCOUNTRIES = new DefaultTableModel();
     /**
      * Creates new form CriarPais
@@ -94,6 +96,11 @@ public class InsertCountryView extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create a new country");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("CREATE A NEW COUNTRY");
 
@@ -183,17 +190,27 @@ public class InsertCountryView extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (checkForm()) {
             try {
-                MainView.addElementJcbContries(new Country(
+                Country c = new Country(
                         txtCountrysName.getText(),
                         txtCountrysInitials.getText(),
-                        Integer.parseInt(txtTelephoneCode.getText())
-                ));
+                        Integer.parseInt(txtTelephoneCode.getText()));
+                MainView.addElementJcbContries(c);
+                addRowCountriesTable(rowsCountriesFactory(c));
                 JOptionPane.showMessageDialog(this, "Country inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Only numbers are allowed in telephone code", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        setJtCountries();
+        for(int i = 0 ; i < REGISTER.getCustomerSize();i++){
+            addRowCountriesTable(rowsCountriesFactory(REGISTER.getCountries().get(i)));
+        }
+        
+    }//GEN-LAST:event_formWindowOpened
 
     private boolean checkForm() {
         if (txtCountrysName.getText().equalsIgnoreCase("")) {
@@ -207,11 +224,6 @@ public class InsertCountryView extends javax.swing.JDialog {
         }
         return true;
     }
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {                                  
-        // TODO add your handling code here:
-        setJtCountries();
-    }
     
     private void setJtCountries(){
         TABLEMODELCOUNTRIES.addColumn("Country");
@@ -221,7 +233,7 @@ public class InsertCountryView extends javax.swing.JDialog {
     }
     
     private String[] rowsCountriesFactory(Country c) {
-        String row[] = new String[2];
+        String row[] = new String[3];
         row[0] = c.getName();
         row[1] = c.getInitials();
         row[2] = String.format("%03d" , c.getTelephoneCode());

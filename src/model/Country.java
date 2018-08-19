@@ -17,6 +17,7 @@ public class Country {
     public Country(String name , String initials, int ddi){
         this.name = name;
         this.initials = initials;
+        this.telephoneCode = ddi;
     }
     
     public Country (){}

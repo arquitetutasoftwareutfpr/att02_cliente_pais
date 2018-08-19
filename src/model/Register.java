@@ -26,7 +26,7 @@ public class Register {
                 return true;
             }
         }
-        if(s.length() < 5){
+        if(s.length() > 5){
             return true;
         }
         
@@ -69,6 +69,10 @@ public class Register {
         }
     }
         
+    public int getCustomerSize(){
+       return customers.size();
+    }
+    
     public boolean checkTelephone(Country country, String telephone){
         String  ddi = String.valueOf(country.getTelephoneCode());
         if(ddi.equalsIgnoreCase(telephone.substring(0, ddi.length()-2))){

@@ -206,7 +206,7 @@ public class MainView extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if(checkForm()){
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(txtBirthday.getText());
+                Date date = new SimpleDateFormat("yyyy/MM/dd").parse(txtBirthday.getText());
                 REGISTER.addCustomer(txtName.getText(),
                 date,
                 txtPhoneNumber.getText(), 
@@ -239,6 +239,7 @@ public class MainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         setJcbCountries();
         setJtCostumers();
+        //addRowCustomersTable(rowsCustomerFactory(REGISTER.getCustomers().stream().forEach(customer));
     }//GEN-LAST:event_formWindowOpened
 
     private void setJtCostumers() {
@@ -251,7 +252,7 @@ public class MainView extends javax.swing.JFrame {
     }
 
     private String[] rowsCustomerFactory(Customer c) {
-        String row[] = new String[4];
+        String row[] = new String[5];
         row[0] = c.getName();
         row[1] = new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()).concat(String.valueOf(c.calcAge(c.getBirthDate())));
         row[2] = c.getTelephone();
