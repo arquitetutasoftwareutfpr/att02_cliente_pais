@@ -8,6 +8,8 @@ package view;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +23,7 @@ import model.Register;
  */
 public class MainView extends javax.swing.JFrame {
 
+    private int selectedRow = -1;
     public static final Register REGISTER = new Register();
     private final DefaultTableModel TABLEMODELCUSTOMERS = new DefaultTableModel();
     private static final DefaultComboBoxModel COMBOXMODELCOUNTRIES = new DefaultComboBoxModel();
@@ -95,6 +98,11 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel6.setText("REGISTERED COSTUMERS");
 
+        jtCustomers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtCustomersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtCustomers);
 
         jLabel7.setText("Select a customer to edit it.");
@@ -165,7 +173,7 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jMenu1.setText("Insert");
+        jMenu1.setText("Country");
 
         jMenuItem1.setText("New country");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -203,14 +211,17 @@ public class MainView extends javax.swing.JFrame {
         if (checkForm()) {
             try {
                 Date date = new SimpleDateFormat("yyyy/MM/dd").parse(txtBirthday.getText());
-                Customer c = new Customer(txtName.getText(),date,txtPhoneNumber.getText(),(Country) jcbCountries.getSelectedItem());
+                Customer c = new Customer(txtName.getText(), date, txtPhoneNumber.getText(), (Country) jcbCountries.getSelectedItem());
                 if (REGISTER.checkName(c.getName())) {
-                    REGISTER.addCustomer(c);
-                    addRowCustomersTable(rowsCustomerFactory(c));
                     JOptionPane.showMessageDialog(this, "Customer inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "This customer already exists", "Warning", JOptionPane.WARNING_MESSAGE);
+                    TABLEMODELCUSTOMERS.removeRow(selectedRow);
+                    System.out.println("Removeu: "+REGISTER.findAndRemoveCustomer(c.getName()));
+                    JOptionPane.showMessageDialog(this, "Customer edited successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
+                REGISTER.addCustomer(c);
+                addRowCustomersTable(rowsCustomerFactory(c));
+                resetForm();
             } catch (ParseException ex) {
                 JOptionPane.showMessageDialog(this, "Please, fill in the date of birth correctly", "Warning", JOptionPane.WARNING_MESSAGE);
             }
@@ -223,6 +234,53 @@ public class MainView extends javax.swing.JFrame {
         setJcbCountries();
         setJtCostumers();
     }//GEN-LAST:event_formWindowOpened
+    
+    private void jtCustomersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCustomersMouseClicked
+        // TODO add your handling code here:
+        selectedRow = jtCustomers.getSelectedRow();
+        setEditForm(getSelectedCustomer());
+    }//GEN-LAST:event_jtCustomersMouseClicked
+
+    private void resetForm(){
+        txtName.setText("");
+        txtBirthday.setText("");
+        txtPhoneNumber.setText("");
+        jcbCountries.setSelectedIndex(0);
+    }
+    
+    private void setEditForm(Customer c) {
+        txtName.setText(c.getName());
+        txtBirthday.setText(new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()));
+        txtPhoneNumber.setText(c.getTelephone());
+        setSelectedItemJCombox(c.getCountry() + "");
+    }
+
+    public static void setSelectedItemJCombox(String value) {
+        int tam = jcbCountries.getItemCount();
+        for (int i = 0; i < tam; i++) {
+            Object item = jcbCountries.getItemAt(i);
+            if (item.toString().equals(value)) {
+                jcbCountries.setSelectedIndex(i);
+            }
+        }
+    }
+
+    private Customer getSelectedCustomer() {
+        int row = jtCustomers.getSelectedRow();
+        if (row != -1) {
+            try {
+                return new Customer(
+                        String.valueOf(jtCustomers.getValueAt(row, 0)),
+                        new SimpleDateFormat("yyyy/MM/dd").parse(String.valueOf(jtCustomers.getValueAt(row, 1))),
+                        String.valueOf(jtCustomers.getValueAt(row, 2)),
+                        REGISTER.findCountry(String.valueOf(jtCustomers.getValueAt(row, 3)))
+                );
+            } catch (ParseException ex) {
+                Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
 
     private boolean checkForm() {
         if (txtName.getText().equalsIgnoreCase("")) {
@@ -281,7 +339,7 @@ public class MainView extends javax.swing.JFrame {
     private String[] rowsCustomerFactory(Customer c) {
         String row[] = new String[5];
         row[0] = c.getName();
-        row[1] = new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()).concat(String.valueOf("("+c.calcAge(c.getBirthDate())+")"));
+        row[1] = new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()).concat(String.valueOf("(" + c.calcAge(c.getBirthDate()) + ")"));
         row[2] = c.getTelephone();
         row[3] = c.getCountry().getName().concat(" (" + c.getCountry().getInitials() + ")");
         row[4] = String.format("%.2f", c.getCreditLimit());

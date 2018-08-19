@@ -35,6 +35,26 @@ public class Register {
         }
     }
 
+    public int findAndRemoveCustomer(String name){
+        for(int i=0;i<CUSTOMERS.size();i++){
+            if(CUSTOMERS.get(i).getName().equalsIgnoreCase(name)){
+                CUSTOMERS.remove(i);
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public Country findCountry(String value) {
+        value = value.substring(0, value.indexOf(" ("));
+        for (Country c : COUNTRIES) {
+            if (c.getName().equalsIgnoreCase(value)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     public void addCustomer(Customer client) {
         CUSTOMERS.add(client);
     }

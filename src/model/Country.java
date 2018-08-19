@@ -10,18 +10,20 @@ package model;
  * @author caah_
  */
 public class Country {
+
     private String name;
     private String initials;
     private int telephoneCode; //Código de área internacional
-    
-    public Country(String name , String initials, int ddi){
+
+    public Country(String name, String initials, int ddi) {
         this.name = name;
         this.initials = initials;
         this.telephoneCode = ddi;
     }
-    
-    public Country (){}
-    
+
+    public Country() {
+    }
+
     /**
      * @return the name
      */
@@ -50,17 +52,17 @@ public class Country {
         this.initials = initials;
     }
 
-    public int getTelephoneCode(){
-       return this.telephoneCode;
+    public int getTelephoneCode() {
+        return this.telephoneCode;
     }
-    
-    public void setTelephoneCode(int ddi){
-         this.telephoneCode = ddi;
+
+    public void setTelephoneCode(int ddi) {
+        this.telephoneCode = ddi;
     }
 
     @Override
     public String toString() {
-        return this.name;
+        return this.name.concat(" (" + this.initials + ")");
     }
-    
+
 }

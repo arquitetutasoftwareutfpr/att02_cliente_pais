@@ -197,6 +197,7 @@ public class InsertCountryView extends javax.swing.JDialog {
                     MainView.addElementJcbContries(c);
                     addRowCountriesTable(rowsCountriesFactory(c));
                     JOptionPane.showMessageDialog(this, "Country inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    resetForm();
                 } else {
                     JOptionPane.showMessageDialog(this, "Country already exists", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
@@ -211,6 +212,12 @@ public class InsertCountryView extends javax.swing.JDialog {
         setJtCountries();
     }//GEN-LAST:event_formWindowOpened
 
+    private void resetForm(){
+        txtCountrysName.setText("");
+        txtCountrysInitials.setText("");
+        txtTelephoneCode.setText("");
+    }
+    
     private boolean checkForm() {
         if (txtCountrysName.getText().equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "Country's name is missing", "Warning", JOptionPane.WARNING_MESSAGE);
