@@ -27,7 +27,7 @@ public class MainView extends javax.swing.JFrame {
 
     private static final Register REGISTER = new Register();
     private final DefaultTableModel TABLEMODELCUSTOMERS = new DefaultTableModel();
-    private static final DefaultComboBoxModel COMBOXMODELCONTRIES = new DefaultComboBoxModel();
+    private static final DefaultComboBoxModel COMBOXMODELCOUNTRIES = new DefaultComboBoxModel();
 
     /**
      * Creates new form Principal
@@ -237,7 +237,7 @@ public class MainView extends javax.swing.JFrame {
     }
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        setJcbContries();
+        setJcbCountries();
         setJtCostumers();
     }//GEN-LAST:event_formWindowOpened
 
@@ -265,8 +265,8 @@ public class MainView extends javax.swing.JFrame {
         TABLEMODELCUSTOMERS.fireTableDataChanged();
     }
 
-    private void setJcbContries() {
-        jcbCountries.setModel(COMBOXMODELCONTRIES);
+    private void setJcbCountries() {
+        jcbCountries.setModel(COMBOXMODELCOUNTRIES);
     }
     
     public static void addElementJcbContries(Country country){
@@ -275,8 +275,8 @@ public class MainView extends javax.swing.JFrame {
                 country.getInitials(), 
                 country.getTelephoneCode()
         );
-        COMBOXMODELCONTRIES.addElement(country);
-        jcbCountries.setModel(COMBOXMODELCONTRIES);
+        COMBOXMODELCOUNTRIES.addElement(country);
+        jcbCountries.setModel(COMBOXMODELCOUNTRIES);
     }
 
     /**
