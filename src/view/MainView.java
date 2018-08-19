@@ -5,13 +5,9 @@
  */
 package view;
 
-import static java.lang.String.format;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +21,7 @@ import model.Register;
  */
 public class MainView extends javax.swing.JFrame {
 
-    private static final Register REGISTER = new Register();
+    public static final Register REGISTER = new Register();
     private final DefaultTableModel TABLEMODELCUSTOMERS = new DefaultTableModel();
     private static final DefaultComboBoxModel COMBOXMODELCOUNTRIES = new DefaultComboBoxModel();
 
@@ -204,47 +200,75 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if(checkForm()){
+        if (checkForm()) {
             try {
                 Date date = new SimpleDateFormat("yyyy/MM/dd").parse(txtBirthday.getText());
-                Customer c = new Customer(txtName.getText(),
-                date,
-                txtPhoneNumber.getText(), 
-                (Country) jcbCountries.getSelectedItem());
-             
-                REGISTER.addCustomer(c.getName(),c.getBirthDate(),c.getTelephone(),c.getCountry());
-                addRowCustomersTable(rowsCustomerFactory(c));
-                JOptionPane.showMessageDialog(this, "Customer inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (ParseException ex ) {
-                JOptionPane.showMessageDialog(this, "Please, fill in the date of birth correctly!", "Error", JOptionPane.ERROR_MESSAGE);
-            } catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Please, fill out the form correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+                Customer c = new Customer(txtName.getText(),date,txtPhoneNumber.getText(),(Country) jcbCountries.getSelectedItem());
+                if (REGISTER.checkName(c.getName())) {
+                    REGISTER.addCustomer(c);
+                    addRowCustomersTable(rowsCustomerFactory(c));
+                    JOptionPane.showMessageDialog(this, "Customer inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This customer already exists", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, "Please, fill in the date of birth correctly", "Warning", JOptionPane.WARNING_MESSAGE);
             }
-             
+
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-    private boolean checkForm() {
-        if (txtName.getText().equalsIgnoreCase("")) {
-            return false;
-        }
-        if(txtBirthday.getText().equalsIgnoreCase("")){
-            return false;
-        }
-        if(txtPhoneNumber.getText().equals("")){
-            return false;
-        }
-        if(jcbCountries.getSelectedItem()== null){
-            return false;
-        }
-        return true;
-    }
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         setJcbCountries();
         setJtCostumers();
-        //addRowCustomersTable(rowsCustomerFactory(REGISTER.getCustomers().stream().forEach(customer));
     }//GEN-LAST:event_formWindowOpened
 
+    private boolean checkForm() {
+        if (txtName.getText().equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(this, "Customer's name is missing", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (txtBirthday.getText().equalsIgnoreCase("    /  /  ")) {
+            JOptionPane.showMessageDialog(this, "Customer's birthday is missing", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (txtPhoneNumber.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Customer's phone number is missing", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else {
+            if (!onlyNumbers(txtPhoneNumber.getText())) {
+                JOptionPane.showMessageDialog(this, "Only numbers is permited in customer's phone number", "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        }
+        if (jcbCountries.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Customer's country is missing", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (!checkPhoneNumber()) {
+            JOptionPane.showMessageDialog(this, "Customer's phone number is not valid according\nto the selected country", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean onlyNumbers(String value) {
+        try {
+            int numbers = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkPhoneNumber() {
+        String ddiCountry = String.valueOf(((Country) jcbCountries.getSelectedItem()).getTelephoneCode());
+        String ddiCustomer = txtPhoneNumber.getText().substring(0, ddiCountry.length());
+        return ddiCountry.equalsIgnoreCase(ddiCustomer);
+    }
+
+    //JTable's customers
     private void setJtCostumers() {
         TABLEMODELCUSTOMERS.addColumn("Name");
         TABLEMODELCUSTOMERS.addColumn("Birthday");
@@ -257,7 +281,7 @@ public class MainView extends javax.swing.JFrame {
     private String[] rowsCustomerFactory(Customer c) {
         String row[] = new String[5];
         row[0] = c.getName();
-        row[1] = new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()).concat(String.valueOf(c.calcAge(c.getBirthDate())));
+        row[1] = new SimpleDateFormat("yyyy/MM/dd").format(c.getBirthDate()).concat(String.valueOf("("+c.calcAge(c.getBirthDate())+")"));
         row[2] = c.getTelephone();
         row[3] = c.getCountry().getName().concat(" (" + c.getCountry().getInitials() + ")");
         row[4] = String.format("%.2f", c.getCreditLimit());
@@ -269,14 +293,15 @@ public class MainView extends javax.swing.JFrame {
         TABLEMODELCUSTOMERS.fireTableDataChanged();
     }
 
+    //JComboBox's countries
     private void setJcbCountries() {
         jcbCountries.setModel(COMBOXMODELCOUNTRIES);
     }
-    
-    public static void addElementJcbContries(Country country){
+
+    public static void addElementJcbContries(Country country) {
         REGISTER.addCountry(
-                country.getName(), 
-                country.getInitials(), 
+                country.getName(),
+                country.getInitials(),
                 country.getTelephoneCode()
         );
         COMBOXMODELCOUNTRIES.addElement(country);
@@ -310,10 +335,8 @@ public class MainView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainView().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainView().setVisible(true);
         });
     }
 

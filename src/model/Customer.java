@@ -95,17 +95,17 @@ public class Customer {
 
     public int calcAge(Date date) {
 
-        Calendar birthDate = Calendar.getInstance();
-        birthDate.setTime(date);
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(date);
         Calendar hoje = Calendar.getInstance();
 
-        int age = hoje.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+        int age = hoje.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
 
-        if (hoje.get(Calendar.MONTH) < birthDate.get(Calendar.MONTH)) {
+        if (hoje.get(Calendar.MONTH) < birth.get(Calendar.MONTH)) {
             age--;
         } else {
-            if (hoje.get(Calendar.MONTH) == birthDate.get(Calendar.MONTH)
-                    && hoje.get(Calendar.DAY_OF_MONTH) < birthDate.get(Calendar.DAY_OF_MONTH)) {
+            if (hoje.get(Calendar.MONTH) == birth.get(Calendar.MONTH)
+                    && hoje.get(Calendar.DAY_OF_MONTH) < birth.get(Calendar.DAY_OF_MONTH)) {
                 age--;
             }
         }
