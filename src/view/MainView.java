@@ -5,8 +5,15 @@
  */
 package view;
 
+import static java.lang.String.format;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Country;
 import model.Customer;
@@ -197,9 +204,37 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+        if(checkForm()){
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(txtBirthday.getText());
+                REGISTER.addCustomer(txtName.getText(),
+                date,
+                txtPhoneNumber.getText(), 
+                (Country) jcbCountries.getSelectedItem());
+                JOptionPane.showMessageDialog(this, "Customer inserted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (ParseException ex ) {
+                JOptionPane.showMessageDialog(this, "Please, fill in the date of birth correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Please, fill out the form correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+             
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
-
+    private boolean checkForm() {
+        if (txtName.getText().equalsIgnoreCase("")) {
+            return false;
+        }
+        if(txtBirthday.getText().equalsIgnoreCase("")){
+            return false;
+        }
+        if(txtPhoneNumber.getText().equals("")){
+            return false;
+        }
+        if(jcbCountries.getSelectedItem()== null){
+            return false;
+        }
+        return true;
+    }
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         setJcbContries();

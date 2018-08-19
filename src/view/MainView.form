@@ -238,6 +238,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="MainView_jtCustomers"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

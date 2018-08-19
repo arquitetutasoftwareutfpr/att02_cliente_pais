@@ -9,6 +9,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -47,21 +48,27 @@ public class Register {
         return false;
     }
     public void addCountry(String name , String initials, int ddi){
-        if(!checkCountry(name)){
-            Country country = new Country(name, initials, ddi);
-            countries.add(country);
+        try{
+            if(!checkCountry(name)){
+                Country country = new Country(name, initials, ddi);
+                countries.add(country);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Name less than 5 characters or already registered!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    public void addClient(String name, Date birthDate , String telephone , Country country){
-        if(!checkName(name) && checkTelephone(country, telephone)){
-            
-            Customer client = new Customer(name, birthDate, telephone, country);
-            customers.add(client);
-            
+    public void addCustomer(String name, Date birthDate , String telephone , Country country){
+        try{
+            if(!checkName(name) && checkTelephone(country, telephone)){
+                Customer client = new Customer(name, birthDate, telephone, country);
+                customers.add(client);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Name less than 5 characters or already registered!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+        
     public boolean checkTelephone(Country country, String telephone){
         String  ddi = String.valueOf(country.getTelephoneCode());
         if(ddi.equalsIgnoreCase(telephone.substring(0, ddi.length()-2))){
